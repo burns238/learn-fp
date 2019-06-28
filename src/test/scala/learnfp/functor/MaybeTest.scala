@@ -1,10 +1,9 @@
 package learnfp.functor
 
+import learnfp.functor.FunctorOps._
+import learnfp.functor.Maybe._
+import learnfp.functor.MaybeInstance._
 import org.scalatest.{Matchers, WordSpecLike}
-
-import Maybe._
-import FunctorOps._
-import MaybeInstance._
 
 class MaybeTest extends WordSpecLike with Matchers {
   "maybe functor" should {

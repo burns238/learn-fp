@@ -64,7 +64,7 @@ class IdTTest extends WordSpecLike with Matchers {
           y <- 20.pure[App]
           z <- 30.pure[App]
         } yield { (a, x + y + z) }
-      }.runIdT shouldBe nothing[Unit]()
+      }.runIdT shouldBe nothing[Unit]
     }
 
 

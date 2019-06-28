@@ -90,14 +90,28 @@ class FreeTest extends WordSpecLike with Matchers {
       type TurtleState[X] = State[Position, X]
       type TurtleStateWriter[X] = WriterT[X, TurtleState, List[String]]
 
-      // TODO: implement me
       class MovementToWriterTState extends Natural[Movement, TurtleStateWriter] {
         override def transform[A](a: Movement[A]): TurtleStateWriter[A] = a match {
-          case Start(pos) => ???
-          case MoveUp(d) => ???
-          case MoveDown(d) => ???
-          case MoveLeft(d) => ???
-          case MoveRight(d) => ???
+          case Start(pos) => for {
+            _ <- WriterT.tell[TurtleState, List[String]](List(s"starting at $pos"))
+            _ <- WriterT.lift[Unit, TurtleState, List[String]](State.put[Position](pos))
+          } yield {}
+          case MoveUp(d) => for {
+            _ <- WriterT.tell[TurtleState, List[String]](List(s"moving up $d steps"))
+            _ <- WriterT.lift[Unit, TurtleState, List[String]](State.modify[Position] {p => p.copy(y=p.y + d)})
+          } yield {}
+          case MoveDown(d) => for {
+            _ <- WriterT.tell[TurtleState, List[String]](List(s"moving down $d steps"))
+            _ <- WriterT.lift[Unit, TurtleState, List[String]](State.modify[Position] {p => p.copy(y=p.y - d)})
+          } yield {}
+          case MoveLeft(d) => for {
+            _ <- WriterT.tell[TurtleState, List[String]](List(s"moving left $d steps"))
+            _ <- WriterT.lift[Unit, TurtleState, List[String]](State.modify[Position] {p => p.copy(x=p.x - d)})
+          } yield {}
+          case MoveRight(d) => for {
+            _ <- WriterT.tell[TurtleState, List[String]](List(s"moving right $d steps"))
+            _ <- WriterT.lift[Unit, TurtleState, List[String]](State.modify[Position] {p => p.copy(x=p.x + d)})
+          } yield {}
         }
       }
 
